@@ -53,7 +53,6 @@ on:
 env:
   PROJECT_ID: api-test-376019 # TODO: update Google Cloud project id
   SERVICE: default # TODO: update Cloud Run service name
-  REGION: southamerica-east1
 
 jobs:
   deploy:
