@@ -1,0 +1,33 @@
+name: Deploy to Cloud Run from Source
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  PROJECT_ID: api-test-376019
+  SERVICE: default
+  REGION: southamerica-east1
+
+jobs:
+  deploy:
+    # Add 'id-token' with the intended permissions for workload identity federation
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: projects/627344324507/locations/global/workloadIdentityPools/github-pool # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          service_account: api-test-376019@appspot.gserviceaccount.com
+
+      # If required, use the Cloud Run url output in later steps
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
