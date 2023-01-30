@@ -25,12 +25,14 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: projects/627344324507/locations/global/workloadIdentityPools/github-pool
-          service_account: api-test-376019@appspot.gserviceaccount.com
-          aud: google-wif
+          service_account: deploy@api-test-376019.iam.gserviceaccount.com
     
       - name: Deploy
         id: deploy
         uses: 'google-github-actions/deploy-appengine@v1'
+        with:
+          workload_identity_provider: projects/627344324507/locations/global/workloadIdentityPools/github-pool
+          service_account: deploy@api-test-376019.iam.gserviceaccount.com
 
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
