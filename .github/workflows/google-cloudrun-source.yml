@@ -27,7 +27,10 @@ jobs:
         with:
           workload_identity_provider: projects/627344324507/locations/global/workloadIdentityPools/github-pool # e.g. - projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
           service_account: deploy@api-test-376019.iam.gserviceaccount.com
+    
+      - name: Deploy
+        id: deploy
+        uses: 'google-github-actions/deploy-appengine@v1'
 
-      # If required, use the Cloud Run url output in later steps
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
