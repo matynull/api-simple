@@ -8,23 +8,28 @@ env:
   PROJECT_ID: api-test-376019
   SERVICE: default
   REGION: southamerica-east1
-  
+
 jobs:
   deploy:
     permissions:
       contents: 'read'
       id-token: 'write'
 
+    runs-on: ubuntu-latest
     steps:
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        workload_identity_provider: 'projects/627344324507/locations/global/workloadIdentityPools/github-pool'
-        service_account: 'deploy@api-test-376019.iam.gserviceaccount.com'
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - id: 'deploy'
-      uses: 'google-github-actions/deploy-appengine@v1'
+      - name: Google Auth
+        id: auth
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: projects/627344324507/locations/global/workloadIdentityPools/github-pool
+          service_account: api-test-376019@appspot.gserviceaccount.com
+    
+      - name: Deploy
+        id: deploy
+        uses: 'google-github-actions/deploy-appengine@v1'
 
-    # Example of using the output
-    - id: 'test'
-      run: 'curl "${{ steps.deploy.outputs.url }}"'
+      - name: Show Output
+        run: echo ${{ steps.deploy.outputs.url }}
